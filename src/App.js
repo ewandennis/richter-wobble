@@ -18,11 +18,12 @@ export default ({ svg, width, height }) => {
   const endWiggleY = 0.7;
   const wiggleMagnitude = 100;
   const wiggleScale = 0.5;
-  const bgColour = new Color({ r: 30, g: 50, b: 60 });
+  const bgColour = new Color({ r: 230, g: 150, b: 190 });
 
-  background(svg, width, height, bgColour);
+  // background(svg, width, height, bgColour);
 
-  const canvas = svg.transform({ y: -0.5 * thickness });
+  // Shift the world down a little to push the top line fully into view
+  const canvas = svg.group().transform({ y: -0.5 * thickness });
 
   const yValues = arrayOf(lineCount);
 
