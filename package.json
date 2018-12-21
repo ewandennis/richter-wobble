@@ -5,7 +5,8 @@
   "private": "true",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "simplex-noise": "^2.4.0",
     "svg.js": "^2.7.1"
   }
 }

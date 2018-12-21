@@ -1,43 +1,28 @@
 import { Color } from 'svg.js';
 import { arrayOf } from './array';
-import { horizontalSegment } from './path';
+import { buildPaths, wigglePath } from './path';
+import { toSvgPath, stroke } from './svgHelpers';
+import { round } from './maths';
 
-const random = () => Math.round(Math.random() * 255);
-const randomColour = () => new Color({ r: random(), g: random(), b: random() });
-const round = Math.round;
-
-//
+const background = (svg, width, height, colour) => svg.rect(width, height).fill(colour.toHex());
 
 const buildLines = (yValues, thickness, width, svg) =>
   yValues.map(y => svg.line(0, y * thickness, width, y * thickness));
 
-//
-
-const pathFromLine = (p1, p2, resolution) => {
-  const [_, ...rest] = horizontalSegment(p1, p2, resolution);
-  return [
-    `M ${p1.x} ${p1.y}`,
-    ...rest.map(pt => `L ${round(pt.x)} ${round(pt.y)}`),
-    `L ${p2.x} ${p2.y}`
-  ].join(' ');
-};
-
-const buildPaths = (yValues, thickness, width, svg, resolution) =>
-  yValues.map(y => svg.path(pathFromLine(
-      { x: 0, y: y * thickness },
-      { x: width, y: y * thickness },
-      resolution
-    )));
-
-const stroke = (array, thickness) => array.map(item => item.stroke({
-  width: thickness,
-  color: randomColour().toHex()
-}));
-
 export default ({ svg, width, height }) => {
-  const thickness = 10;
-  const lineCount = Math.floor(height / thickness);
-  const resolution = width / 2;
+  const lineCount = 40;
+  const thickness = round(height / lineCount);
+  const resolution = round(width / 2);
+  const startWiggleX = 0.6;
+  const startWiggleY = 0.4;
+  const endWiggleY = 0.7;
+  const wiggleMagnitude = 100;
+  const wiggleScale = 0.5;
+  const bgColour = new Color({ r: 30, g: 50, b: 60 });
+
+  background(svg, width, height, bgColour);
+
+  const canvas = svg.transform({ y: -0.5 * thickness });
 
   const yValues = arrayOf(lineCount);
 
@@ -45,7 +30,16 @@ export default ({ svg, width, height }) => {
   // stroke(buildLines(yValues, thickness, width, svg), thickness);
 
   // lines -> paths
-  stroke(buildPaths(yValues, thickness, width, svg, resolution), thickness);
+  const paths = buildPaths(yValues, thickness, width, resolution);
+  
+  // move paths yStart - yEnd
+  const wiggly = paths.map((path, idx) => {
+    const y = idx/paths.length;
+    return y >= startWiggleY && y < endWiggleY
+      ? wigglePath({ path, startT: startWiggleX, magnitude: wiggleMagnitude, scale: wiggleScale })
+      : path;
+  });
 
-  // // move paths yStart - yEnd
+  const svgPaths = wiggly.map(path => toSvgPath(path, canvas));
+  stroke(svgPaths, thickness);
 };
