@@ -62,4 +62,9 @@ export const noise2D = simplexNoise.noise2D.bind(simplexNoise);
 
 export const step = (x, thresh) => x >= thresh ? 1 : 0;
 
+export const smoothstep = (x, lo, hi) => {
+  const xClamped = clamp(x, lo, hi);
+  return xClamped * xClamped * (3 - 2 * xClamped);
+}
+
 export const clamp = (x, lo, hi) => x < lo ? lo : (x > hi ? hi : x);

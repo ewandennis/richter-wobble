@@ -6,9 +6,6 @@ import { round } from './maths';
 
 const background = (svg, width, height, colour) => svg.rect(width, height).fill(colour.toHex());
 
-const buildLines = (yValues, thickness, width, svg) =>
-  yValues.map(y => svg.line(0, y * thickness, width, y * thickness));
-
 export default ({ svg, width, height }) => {
   const lineCount = 40;
   const thickness = round(height / lineCount);
@@ -16,19 +13,16 @@ export default ({ svg, width, height }) => {
   const startWiggleX = 0.6;
   const startWiggleY = 0.4;
   const endWiggleY = 0.7;
-  const wiggleMagnitude = 100;
-  const wiggleScale = 0.5;
-  const bgColour = new Color({ r: 230, g: 150, b: 190 });
+  const wiggleMagnitude = 200;
+  const wiggleScale = 0.75;
+  const bgColour = new Color({ r: 20, g: 120, b: 220 });
 
-  // background(svg, width, height, bgColour);
+  background(svg, width, height, bgColour);
 
   // Shift the world down a little to push the top line fully into view
   const canvas = svg.group().transform({ y: -0.5 * thickness });
 
   const yValues = arrayOf(lineCount);
-
-  // horizontally stacked random coloured lines
-  // stroke(buildLines(yValues, thickness, width, svg), thickness);
 
   // lines -> paths
   const paths = buildPaths(yValues, thickness, width, resolution);
