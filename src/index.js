@@ -13,3 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   window.requestAnimationFrame(renderFrame);
 });
+
+window.addEventListener('error', (err) => {
+  alert(`${err.filename} ${err.lineno}:${err.colno}: ${err.message}`);
+});
