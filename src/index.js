@@ -1,15 +1,22 @@
 import frame from './frame';
-import { render as svgRender } from './svg';
-import { render as canvasRender } from './canvas';
+import { render as renderFn } from './canvas';
+
+const fps = 30;
+const frameDelta = (1 / fps) * 1000;
+const parentId = 'gerhardt';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const parentId = 'gerhardt';
-  const renderFn = canvasRender;
+  let lastT = 0;
   const renderFrame = (t) => {
+    window.requestAnimationFrame(renderFrame);
+    // Limit to 
+    if (t - lastT < frameDelta) {
+      return;
+    }
+    lastT = t;
     const width = document.documentElement.clientWidth;
     const height = document.documentElement.clientHeight;
     frame({ parentId, renderFn, width, height, t });
-    window.requestAnimationFrame(renderFrame);
   };
   window.requestAnimationFrame(renderFrame);
 });
