@@ -1,14 +1,4 @@
-import { Color } from 'svg.js';
-import { random, round } from './maths';
-
-const randomColourBase = 80;
-export const randomColourChannel = () => round(randomColourBase + (random() * 128));
-
-export const randomColour = () => new Color({
-  r: randomColourChannel(),
-  g: randomColourChannel(),
-  b: randomColourChannel()
-});
+import { round } from './maths';
 
 export const toPathString = ([first, ...rest]) => [
   `M ${first.x} ${first.y}`,
@@ -17,7 +7,7 @@ export const toPathString = ([first, ...rest]) => [
 
 export const toSvgPath = (path, svg) => svg.path(toPathString(path));
 
-export const stroke = (array, thickness) => array.map(item => item.stroke({
+export const stroke = (array, thickness, colourFn) => array.map((item, idx) => item.stroke({
   width: thickness,
-  color: randomColour().toHex()
+  color: colourFn(idx).toHex()
 }));

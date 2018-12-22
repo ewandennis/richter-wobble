@@ -3,19 +3,20 @@ import { arrayOf } from './array';
 import { buildPaths, wigglePath } from './path';
 import { toSvgPath, stroke } from './svgHelpers';
 import { round } from './maths';
+import { randomColour, greyStripes } from './colours';
 
 const background = (svg, width, height, colour) => svg.rect(width, height).fill(colour.toHex());
 
 export default ({ svg, width, height }) => {
-  const lineCount = 40;
-  const thickness = round(height / lineCount);
-  const resolution = round(width / 2);
-  const startWiggleX = 0.6;
+  const lineCount = 80;
+  const thickness = Math.ceil(height / lineCount);
+  const resolution = round(width / 8);
+  const startWiggleX = 0.7;
   const startWiggleY = 0.4;
-  const endWiggleY = 0.7;
-  const wiggleMagnitude = 200;
+  const endWiggleY = 0.6;
+  const wiggleMagnitude = 150;
   const wiggleScale = 0.75;
-  const bgColour = new Color({ r: 20, g: 120, b: 220 });
+  const bgColour = new Color({ r: 20, g: 80, b: 160 });
 
   background(svg, width, height, bgColour);
 
@@ -36,5 +37,5 @@ export default ({ svg, width, height }) => {
   });
 
   const svgPaths = wiggly.map(path => toSvgPath(path, canvas));
-  stroke(svgPaths, thickness);
+  stroke(svgPaths, thickness, randomColour);
 };
