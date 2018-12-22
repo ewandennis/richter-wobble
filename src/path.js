@@ -13,10 +13,10 @@ export const buildPaths = (yValues, thickness, width, resolution) => yValues.map
 export const lineWidth = line => Math.abs(line[line.length-1].x - line[0].x);
 export const lineHeight = line => Math.abs(line[line.length-1].y - line[0].y);
 
-export const wigglePath = ({ path, startT, magnitude, scale }) => path.map((pt, idx) => {
+export const wigglePath = ({ path, startT, magnitude, scale, t }) => path.map((pt, idx) => {
   const startIdx = round(startT * path.length);
   const tWiggle = idx >= startIdx ? (idx-startIdx) / (path.length-startIdx) : 0;
-  const perturbation = noise2D(tWiggle * scale, pt.y);
+  const perturbation = noise2D(tWiggle * scale, pt.y + t);
   return {
     x: pt.x,
     y: pt.y + perturbation * magnitude * tWiggle
