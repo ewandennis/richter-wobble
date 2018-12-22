@@ -12,16 +12,16 @@ export const toSvgPath = (path, svg) => svg.path(toPathString(path));
 
 export const stroke = (array, thickness, colourFn) => array.map((item, idx) => item.stroke({
   width: thickness,
-  color: colourFn(idx).toHex()
+  color: new Color(colourFn(idx)).toHex()
 }));
 
 let svg;
-export const render = ({ curves, thickness, bgColour, colourFn, width, height, parentSelector }) => {
+export const render = ({ curves, thickness, bgColour, colourFn, width, height, parentId }) => {
   if (svg) {
     svg.remove();
   }
 
-  svg = SVG(parentSelector).size('100%', '100%');
+  svg = SVG(parentId).size('100%', '100%');
 
   background(svg, width, height, bgColour);
 
