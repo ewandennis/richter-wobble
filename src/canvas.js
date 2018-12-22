@@ -21,6 +21,10 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, p
 
   const cxt = canvas.getContext('2d');
   
+  cxt.save();
+
+  cxt.translate(0, thickness/2);
+
   // Fill background
   cxt.fillStyle = toCss(bgColour);
   cxt.fillRect(0, 0, width, height);
@@ -34,4 +38,6 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, p
     curve.forEach(pt => cxt.lineTo(pt.x, pt.y));
     cxt.stroke();
   });
+
+  cxt.restore();
 };
