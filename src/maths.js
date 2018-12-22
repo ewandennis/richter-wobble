@@ -35,6 +35,7 @@ export const aleaRandom = () => {
     return s2 = t - (c = t | 0);
   };
 }
+
 function masher() {
   var n = 0xefc8249d;
   return function(data) {
@@ -56,6 +57,8 @@ function masher() {
 const randomSeed = 101;
 export const random = aleaRandom(randomSeed);
 export const round = Math.round;
+
+export const makeRandom = aleaRandom;
 
 const simplexNoise = new SimplexNoise(random);
 export const noise2D = simplexNoise.noise2D.bind(simplexNoise);

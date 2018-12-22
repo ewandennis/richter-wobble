@@ -1,5 +1,5 @@
 import { arrayOf } from './array';
-import { round, noise2D } from './maths';
+import { smoothstep, round, noise2D } from './maths';
 
 export const segment1D = (a, b, resolution) => arrayOf(resolution+1).map(segmentIdx => a + ((segmentIdx/resolution) * (b-a)));
 export const horizontalSegment = (p1, p2, resolution) => segment1D(p1.x, p2.x, resolution).map(x => ( { x, y: p1.y }));
@@ -16,7 +16,8 @@ export const lineHeight = line => Math.abs(line[line.length-1].y - line[0].y);
 export const wigglePath = ({ path, startT, magnitude, scale, t }) => path.map((pt, idx) => {
   const startIdx = round(startT * path.length);
   const tWiggle = idx >= startIdx ? (idx-startIdx) / (path.length-startIdx) : 0;
-  const perturbation = noise2D(tWiggle * scale, pt.y + t);
+  const tWiggleSmooth = smoothstep(tWiggle, 0, 1);
+  const perturbation = noise2D(tWiggleSmooth * scale, pt.y + t);
   return {
     x: pt.x,
     y: pt.y + perturbation * magnitude * tWiggle
