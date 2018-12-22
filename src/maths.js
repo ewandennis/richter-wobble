@@ -71,3 +71,23 @@ export const smoothstep = (x, lo, hi) => {
 }
 
 export const clamp = (x, lo, hi) => x < lo ? lo : (x > hi ? hi : x);
+
+//        ______
+//       /      \
+// _____/        \_____
+// |   |  |   |  |    |
+// 0   t0 t1  t2 t3   1
+//
+export const impulse = ({t, rampUp, rampDown, rampSize}) => {
+  if (t < rampUp || t >= rampDown + rampSize) {
+    return 0;
+  }
+  if (t < rampUp + rampSize) {
+    return smoothstep((t-rampUp)/rampSize, 0, 1);
+  }
+  if (t < rampDown) {
+    return 1;
+  }
+  //f t >= rampDown
+  return 1 - smoothstep((t-rampDown)/rampSize, 0, 1);
+};
