@@ -1,15 +1,24 @@
 import { toCss } from './colours';
 
+const makeCanvas = (width, height, parent) => {
+  const newCanvas = document.createElement('canvas');
+  newCanvas.width = width;
+  newCanvas.height = height;
+  parent.appendChild(newCanvas);
+  return newCanvas;
+};
+
 export const render = ({ curves, thickness, bgColour, colourFn, width, height, parentId }) => {
-  // Create the canvas first time in
+  // Create the canvas first time in and when page dimensions change
   const parent = document.getElementById(parentId);
-  if (!parent.firstChild) {
-    const newCanvas = document.createElement('canvas');
-    newCanvas.width = width;
-    newCanvas.height = height;
-    parent.appendChild(newCanvas);
+  let canvas = parent.firstChild;
+  if (!canvas || canvas.width !== width || canvas.height !== height) {
+    if (canvas) {
+      canvas.remove();
+    }
+    canvas = makeCanvas(width, height, parent);
   }
-  const canvas = parent.firstChild;
+
   const cxt = canvas.getContext('2d');
   
   // Fill background
