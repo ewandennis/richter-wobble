@@ -10,7 +10,7 @@ const runOptions = {
   fps: 30
 };
 
-const enableVideoRecording = true;
+const enableVideoRecording = false;
 const recordOptions = {
   duration: 5,
   dimsFn: () => ({ width: 800, height: 800 })
