@@ -91,3 +91,5 @@ export const impulse = ({t, rampUp, rampDown, rampSize}) => {
   //f t >= rampDown
   return 1 - smoothstep((t-rampDown)/rampSize, 0, 1);
 };
+
+export const lerp = (a, b, t) => a + (b-a)*t;

@@ -32,8 +32,9 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, p
   // Stroke paths
   cxt.lineWidth = thickness;
   curves.forEach((curve, idx) => {
+    const t = idx / curves.length;
     cxt.beginPath();
-    cxt.strokeStyle = toCss(colourFn(idx));
+    cxt.strokeStyle = toCss(colourFn({ idx, t }));
     cxt.moveTo(curve[0].x, curve[0].y);
     curve.forEach(pt => cxt.lineTo(pt.x, pt.y));
     cxt.stroke();
