@@ -1,26 +1,77 @@
 import frame from './frame';
-import { render as renderFn } from './canvas';
+import { render } from './canvas';
 
-const fps = 30;
-const frameDelta = (1 / fps) * 1000;
-const parentId = 'gerhardt';
+import { record } from './record';
 
-document.addEventListener('DOMContentLoaded', () => {
-  let lastT = 0;
-  const renderFrame = (t) => {
-    window.requestAnimationFrame(renderFrame);
-    // Limit framerate
-    if (t - lastT < frameDelta) {
-      return;
-    }
-    lastT = t;
-    const width = document.documentElement.clientWidth;
-    const height = document.documentElement.clientHeight;
-    frame({ parentId, renderFn, width, height, t });
-  };
-  window.requestAnimationFrame(renderFrame);
+// ----------------------------------------------------------------------------
+
+const runOptions = {
+  renderFn: render,
+  parentId: 'gerhardt',
+  fps: 30
+};
+
+const recordingDuration = 5;
+const videoDims = { width: 800, height: 800 };
+const enableVideoRecording = true;
+
+// ----------------------------------------------------------------------------
+
+window.addEventListener('error', err => {
+  alert(`${err.filename} ${err.lineno}:${err.colno}: ${err.message}`);
 });
 
-window.addEventListener('error', (err) => {
+const documentDims = () => ({
+  width: document.documentElement.clientWidth,
+  height: document.documentElement.clientHeight
+});
+
+const identityFn = arg => () => arg;
+
+const yes = () => true;
+
+const limitFps = fps => {
+  let lastT = 0;
+  const frameDelta = (1 / fps) * 1000;
+  return t => {
+    if (t - lastT < frameDelta) {
+      return false;
+    }
+    lastT = t;
+    return true;
+  };
+};
+
+// ----------------------------------------------------------------------------
+
+const run = ({ parentId, renderFn, dimsFn = documentDims, fps = 0 }) => {
+  const fpsLimitFn = fps ? limitFps(fps) : yes;
+  const renderFrame = t => {
+    requestAnimationFrame(renderFrame);
+    if (!fpsLimitFn(t)) {
+      return;
+    }
+    const { width, height } = dimsFn();
+    frame({ parentId, renderFn, width, height, t });
+  };
+  renderFrame();
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (enableVideoRecording) {
+    record({
+      ...runOptions,
+      run,
+      duration: recordingDuration,
+      dimsFn: identityFn(videoDims)
+    });
+  } else {
+    run(runOptions);
+  }
+});
+
+// ----------------------------------------------------------------------------
+
+window.addEventListener('error', err => {
   alert(`${err.filename} ${err.lineno}:${err.colno}: ${err.message}`);
 });

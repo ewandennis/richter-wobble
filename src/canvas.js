@@ -10,7 +10,16 @@ const makeCanvas = (width, height, parent) => {
   return newCanvas;
 };
 
-export const render = ({ curves, thickness, bgColour, colourFn, width, height, debug, parentId }) => {
+export const render = ({
+  curves,
+  thickness,
+  bgColour,
+  colourFn,
+  width,
+  height,
+  debug,
+  parentId
+}) => {
   // Create the canvas first time in and when page dimensions change
   const parent = document.getElementById(parentId);
   let canvas = parent.firstChild;
@@ -22,10 +31,10 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, d
   }
 
   const cxt = canvas.getContext('2d');
-  
+
   cxt.save();
 
-  cxt.translate(0, thickness/2);
+  cxt.translate(0, thickness / 2);
 
   // Fill background
   cxt.fillStyle = toCss(bgColour);
@@ -44,8 +53,19 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, d
 
   if (debug) {
     cxt.fillStyle = '#0f0';
-    curves.forEach(curve => curve.forEach(pt => cxt.fillRect(pt.x - DEBUG_SIZE, pt.y - DEBUG_SIZE, DEBUG_SIZE, DEBUG_SIZE)));
+    curves.forEach(curve =>
+      curve.forEach(pt =>
+        cxt.fillRect(
+          pt.x - DEBUG_SIZE,
+          pt.y - DEBUG_SIZE,
+          DEBUG_SIZE,
+          DEBUG_SIZE
+        )
+      )
+    );
   }
 
   cxt.restore();
+
+  return canvas;
 };

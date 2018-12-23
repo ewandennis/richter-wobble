@@ -1,8 +1,7 @@
-import { arrayOf } from "./array";
-import { buildPaths, wigglePath, simplifyPaths } from "./path";
-import { round } from "./maths";
-import { mkSweep } from "./colours";
-
+import { arrayOf } from './array';
+import { buildPaths, wigglePath, simplifyPaths } from './path';
+import { round } from './maths';
+import { mkSweep } from './colours';
 
 export default ({ parentId, renderFn, width, height, t }) => {
   const lineCount = 30;
@@ -17,8 +16,11 @@ export default ({ parentId, renderFn, width, height, t }) => {
   const wiggleScale = 5;
   const wiggleSpeedDivisor = 5000;
   const bgColour = { r: 160, g: 100, b: 180 };
-  const colourScheme = mkSweep({ r: 5, g: 54, b: 134 }, { r: 130, g: 210, b: 245 });
-  
+  const colourScheme = mkSweep(
+    { r: 5, g: 54, b: 134 },
+    { r: 130, g: 210, b: 245 }
+  );
+
   // Heights for each line
   const yValues = arrayOf(lineCount);
 
@@ -42,9 +44,13 @@ export default ({ parentId, renderFn, width, height, t }) => {
   });
 
   // Replace straight paths with just their endpoints - faster renders
-  const curves = simplifyPaths({ paths: wiggly, startY: startWiggleY, endY: endWiggleY });
+  const curves = simplifyPaths({
+    paths: wiggly,
+    startY: startWiggleY,
+    endY: endWiggleY
+  });
 
-  renderFn({
+  return renderFn({
     curves,
     thickness,
     bgColour,

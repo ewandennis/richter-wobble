@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname),
@@ -17,8 +17,5 @@ module.exports = {
         }
       }
     ]
-  },
-  devServer: {
-    contentBase: './'
   }
 };
