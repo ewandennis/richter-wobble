@@ -41,6 +41,7 @@ export default ({ parentId, renderFn, width, height, t }) => {
       : path;
   });
 
+  // Replace straight paths with just their endpoints - faster renders
   const curves = simplifyPaths({ paths: wiggly, startY: startWiggleY, endY: endWiggleY });
 
   renderFn({

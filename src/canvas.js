@@ -1,5 +1,7 @@
 import { toCss } from './colours';
 
+const DEBUG_SIZE = 4;
+
 const makeCanvas = (width, height, parent) => {
   const newCanvas = document.createElement('canvas');
   newCanvas.width = width;
@@ -8,7 +10,7 @@ const makeCanvas = (width, height, parent) => {
   return newCanvas;
 };
 
-export const render = ({ curves, thickness, bgColour, colourFn, width, height, parentId }) => {
+export const render = ({ curves, thickness, bgColour, colourFn, width, height, debug, parentId }) => {
   // Create the canvas first time in and when page dimensions change
   const parent = document.getElementById(parentId);
   let canvas = parent.firstChild;
@@ -39,6 +41,11 @@ export const render = ({ curves, thickness, bgColour, colourFn, width, height, p
     curve.forEach(pt => cxt.lineTo(pt.x, pt.y));
     cxt.stroke();
   });
+
+  if (debug) {
+    cxt.fillStyle = '#0f0';
+    curves.forEach(curve => curve.forEach(pt => cxt.fillRect(pt.x - DEBUG_SIZE, pt.y - DEBUG_SIZE, DEBUG_SIZE, DEBUG_SIZE)));
+  }
 
   cxt.restore();
 };

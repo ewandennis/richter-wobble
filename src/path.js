@@ -25,7 +25,7 @@ export const wigglePath = ({ path, startT, endT, rampSize, magnitude, scale, t }
 
 export const simplifyPaths = ({ paths, startY, endY }) => paths.map((path, idx) => {
   const t = idx / paths.length;
-  if (t >= startY || t < endY) {
+  if (t >= startY && t < endY) {
     return path;
   }
   return [path[0], path[path.length-1]];
