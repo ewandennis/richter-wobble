@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastT = 0;
   const renderFrame = (t) => {
     window.requestAnimationFrame(renderFrame);
-    // Limit to 
+    // Limit framerate
     if (t - lastT < frameDelta) {
       return;
     }

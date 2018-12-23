@@ -1,4 +1,4 @@
-import { makeRandom, round, lerp } from './maths';
+import { makeRandom, round, lerp, clamp } from './maths';
 
 export const mkAlternateColours = (colourA, colourB) => ({ idx }) => idx % 2 ? colourA : colourB;
 export const greyStripes = mkAlternateColours('#666', '#ccc');
@@ -21,7 +21,11 @@ export const lerpColour = (a, b, t) => ({
 export const mkSweep = (colourA, colourB) => ({ t }) => lerpColour(fromCss(colourA), fromCss(colourB), t);
 export const greySweep = mkSweep('#222', '#aaa');
 
-export const toCss = colour => typeof(colour) === 'string' ? colour : `rgb(${colour.r}, ${colour.g}, ${colour.b})`;
+export const mkZeros = n => Array(n).fill('0').join('');
+export const zeroPad = (str, zeros) => `${mkZeros(zeros - str.length)}${str}`;
+export const toHex = n => zeroPad(round(clamp(n, 0, 255)).toString(16), 2);
+
+export const toCss = colour => typeof(colour) === 'string' ? colour : `#${toHex(colour.r)}${toHex(colour.g)}${toHex(colour.b)}`;
 export const interpretCssChannel = (channelStr) => channelStr.length === 1 ? channelStr+channelStr : channelStr;
 export const fromCss = colour => {
   if (typeof(colour) !== 'string') {
