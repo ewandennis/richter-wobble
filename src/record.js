@@ -15,7 +15,6 @@ export const record = ({ run, renderFn, duration, fps, ...rest }) => {
       capture.capture(canvas);
     } else if (capturing) {
       capturing = false;
-      capture.save();
       capture.stop();
     }
     frameCount += 1;

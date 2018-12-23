@@ -1,6 +1,5 @@
 import frame from './frame';
 import { render } from './canvas';
-
 import { record } from './record';
 
 // ----------------------------------------------------------------------------
@@ -11,9 +10,11 @@ const runOptions = {
   fps: 30
 };
 
-const recordingDuration = 5;
-const videoDims = { width: 800, height: 800 };
 const enableVideoRecording = true;
+const recordOptions = {
+  duration: 5,
+  dimsFn: () => ({ width: 800, height: 800 })
+};
 
 // ----------------------------------------------------------------------------
 
@@ -25,8 +26,6 @@ const documentDims = () => ({
   width: document.documentElement.clientWidth,
   height: document.documentElement.clientHeight
 });
-
-const identityFn = arg => () => arg;
 
 const yes = () => true;
 
@@ -59,12 +58,7 @@ const run = ({ parentId, renderFn, dimsFn = documentDims, fps = 0 }) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (enableVideoRecording) {
-    record({
-      ...runOptions,
-      run,
-      duration: recordingDuration,
-      dimsFn: identityFn(videoDims)
-    });
+    record({ ...runOptions, run, ...recordOptions });
   } else {
     run(runOptions);
   }
