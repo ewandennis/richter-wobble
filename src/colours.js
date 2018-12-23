@@ -18,7 +18,7 @@ export const lerpColour = (a, b, t) => ({
   b: lerp(a.b, b.b, t)
 });
 
-export const mkSweep = (colourA, colourB) => ({ t }) => lerpColour(fromCss(colourA), fromCss(colourB), t)
+export const mkSweep = (colourA, colourB) => ({ t }) => lerpColour(fromCss(colourA), fromCss(colourB), t);
 export const greySweep = mkSweep('#222', '#aaa');
 
 export const toCss = colour => typeof(colour) === 'string' ? colour : `rgb(${colour.r}, ${colour.g}, ${colour.b})`;
